@@ -106,7 +106,7 @@ fun LoginScreen(navController: NavController? = null) { // Added NavController
         Spacer(modifier = Modifier.height(16.dp))
 
         Button(
-            onClick = { navController?.navigate("chats") }, // Navigate to chats
+            onClick = { navController?.navigate("main_flow/${userType}") },
             modifier = Modifier.fillMaxWidth()
         ) {
             Text("Log In")

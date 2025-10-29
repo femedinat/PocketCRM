@@ -48,8 +48,13 @@ import com.example.pocketcrm.ui.theme.PocketCRMTheme
 
 @OptIn(ExperimentalMaterial3Api::class, ExperimentalFoundationApi::class)
 @Composable
-fun ChatsScreen(navController: NavController? = null) {
-    var chatList by remember { mutableStateOf(chats) }
+fun ChatsScreen(navController: NavController? = null, userType: String) {
+    var currentChatList = if (userType == "Cliente") {
+        chats.filter { it.name == "José" }
+    } else {
+        chats
+    }
+    var chatList by remember { mutableStateOf(currentChatList) }
 
     Scaffold(
         topBar = {
@@ -67,38 +72,45 @@ fun ChatsScreen(navController: NavController? = null) {
                     modifier = Modifier.fillMaxWidth(),
                     horizontalArrangement = Arrangement.SpaceAround
                 ) {
-                    IconButton(onClick = { navController?.navigate("chats") }) {
+                    IconButton(onClick = { navController?.navigate("chats/$userType") }) {
                         Icon(Icons.Filled.Email, contentDescription = "Chats")
                     }
-                    IconButton(onClick = { navController?.navigate("my-profile") }) {
+                    IconButton(onClick = { navController?.navigate("my-profile/$userType") }) {
                         Icon(Icons.Filled.Person, contentDescription = "My Profile")
+                    }
+                    if (userType == "Operador") {
+                        IconButton(onClick = { navController?.navigate("crm/$userType") }) {
+                            Text("CRM")
+                        }
                     }
                 }
             }
         }
     ) { paddingValues ->
         Column(modifier = Modifier.padding(paddingValues)) {
-            OutlinedTextField(
-                value = "",
-                onValueChange = {},
-                placeholder = { Text("Search") },
-                leadingIcon = { Icon(Icons.Filled.Search, contentDescription = null) },
-                modifier = Modifier
-                    .fillMaxWidth()
-                    .padding(8.dp)
-            )
+            if (userType == "Operador") {
+                OutlinedTextField(
+                    value = "",
+                    onValueChange = {},
+                    placeholder = { Text("Search") },
+                    leadingIcon = { Icon(Icons.Filled.Search, contentDescription = null) },
+                    modifier = Modifier
+                        .fillMaxWidth()
+                        .padding(8.dp)
+                )
+            }
             LazyColumn {
                 items(chatList) { chat ->
                     ChatItem(
                         chat = chat,
-                        onClick = { navController?.navigate("chat/${chat.userId}") },
+                        onClick = { navController?.navigate("chat/${chat.userId}/$userType") },
                         onLongClick = {
                             val updatedChats = chatList.map {
                                 if (it.userId == chat.userId) {
                                     it.copy(isVip = !it.isVip)
                                 } else {
                                     it
-                                }
+                                 }
                             }
                             chatList = updatedChats
                         }
@@ -149,6 +161,6 @@ fun ChatItem(chat: Chat, onClick: () -> Unit, onLongClick: () -> Unit) {
 @Composable
 fun ChatsScreenPreview() {
     PocketCRMTheme {
-        ChatsScreen()
+        ChatsScreen(userType = "Operador")
     }
 }

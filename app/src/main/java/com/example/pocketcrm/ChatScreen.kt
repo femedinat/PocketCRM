@@ -49,7 +49,7 @@ import com.example.pocketcrm.ui.theme.PocketCRMTheme
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
-fun ChatScreen(navController: NavController? = null, userId: String?) {
+fun ChatScreen(navController: NavController? = null, userId: String?, userType: String) {
     val chat = chats.find { it.userId == userId }
     val user = users.find { it.id == userId }
 
@@ -59,17 +59,35 @@ fun ChatScreen(navController: NavController? = null, userId: String?) {
                 title = {
                     Row(
                         verticalAlignment = Alignment.CenterVertically,
-                        modifier = Modifier.clickable { navController?.navigate("profile/${user?.id}") }
+                        modifier = Modifier.clickable {
+                            if (userType == "Cliente") {
+                                navController?.navigate("my-profile/${userType}")
+                            } else {
+                                navController?.navigate("profile/${user?.id}")
+                            }
+                        }
                     ) {
-                        Image(
-                            painter = painterResource(id = chat?.avatar ?: R.drawable.jose),
-                            contentDescription = "User Avatar",
-                            modifier = Modifier
-                                .size(40.dp)
-                                .clip(CircleShape)
-                        )
-                        Spacer(modifier = Modifier.width(8.dp))
-                        Text(user?.name ?: "")
+                        if (userType == "Cliente") {
+                            Image(
+                                painter = painterResource(id = pauloProfile.avatar),
+                                contentDescription = "User Avatar",
+                                modifier = Modifier
+                                    .size(40.dp)
+                                    .clip(CircleShape)
+                            )
+                            Spacer(modifier = Modifier.width(8.dp))
+                            Text(pauloProfile.name)
+                        } else {
+                            Image(
+                                painter = painterResource(id = chat?.avatar ?: R.drawable.jose),
+                                contentDescription = "User Avatar",
+                                modifier = Modifier
+                                    .size(40.dp)
+                                    .clip(CircleShape)
+                            )
+                            Spacer(modifier = Modifier.width(8.dp))
+                            Text(user?.name ?: "")
+                        }
                     }
                 },
                 navigationIcon = {
@@ -78,7 +96,7 @@ fun ChatScreen(navController: NavController? = null, userId: String?) {
                     }
                 },
                 actions = {
-                    if (user?.isVip == true) {
+                    if (userType == "Operador" && user?.isVip == true) {
                         Badge(containerColor = Color.Red, contentColor = Color.White) { Text("VIP") }
                     }
                 },
@@ -99,7 +117,7 @@ fun ChatScreen(navController: NavController? = null, userId: String?) {
                 .padding(paddingValues)
                 .padding(8.dp)
         ) {
-            if (user != null) {
+            if (userType == "Operador" && user != null) {
                 StatusCard(status = user.status)
                 Spacer(modifier = Modifier.height(8.dp))
                 QuickNoteCard(note = user.quickNote)
@@ -210,6 +228,6 @@ fun QuickNoteCard(note: String) {
 @Composable
 fun ChatScreenPreview() {
     PocketCRMTheme {
-        ChatScreen(userId = "paulo")
+        ChatScreen(userId = "paulo", userType = "Operador")
     }
 }
