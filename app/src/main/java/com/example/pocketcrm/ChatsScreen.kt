@@ -52,7 +52,7 @@ fun ChatsScreen(navController: NavController? = null, userType: String) {
     var currentChatList = if (userType == "Cliente") {
         chats.filter { it.name == "José" }
     } else {
-        chats
+        chats.filter { it.name != "José" }
     }
     var chatList by remember { mutableStateOf(currentChatList) }
 
@@ -88,17 +88,15 @@ fun ChatsScreen(navController: NavController? = null, userType: String) {
         }
     ) { paddingValues ->
         Column(modifier = Modifier.padding(paddingValues)) {
-            if (userType == "Operador") {
-                OutlinedTextField(
-                    value = "",
-                    onValueChange = {},
-                    placeholder = { Text("Search") },
-                    leadingIcon = { Icon(Icons.Filled.Search, contentDescription = null) },
-                    modifier = Modifier
-                        .fillMaxWidth()
-                        .padding(8.dp)
-                )
-            }
+            OutlinedTextField(
+                value = "",
+                onValueChange = {},
+                placeholder = { Text("Search") },
+                leadingIcon = { Icon(Icons.Filled.Search, contentDescription = null) },
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .padding(8.dp)
+            )
             LazyColumn {
                 items(chatList) { chat ->
                     ChatItem(

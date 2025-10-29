@@ -37,9 +37,10 @@ class MainActivity : ComponentActivity() {
                         val userType = backStackEntry.arguments?.getString("userType") ?: "Cliente"
                         ChatScreen(navController, userId, userType)
                     }
-                    composable("profile/{userId}") { backStackEntry ->
+                    composable("profile/{userId}/{userType}", arguments = listOf(navArgument("userId") { type = NavType.StringType }, navArgument("userType") { type = NavType.StringType })) { backStackEntry ->
                         val userId = backStackEntry.arguments?.getString("userId")
-                        ProfileScreen(navController, userId)
+                        val userType = backStackEntry.arguments?.getString("userType") ?: "Cliente"
+                        ProfileScreen(navController, userId, userType)
                     }
                     composable("my-profile/{userType}", arguments = listOf(navArgument("userType") { type = NavType.StringType })) { backStackEntry ->
                         val userType = backStackEntry.arguments?.getString("userType") ?: "Cliente"

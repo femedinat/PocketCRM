@@ -49,6 +49,10 @@ val juliaMessages = listOf(
     Message("Pode me passar uma previsão?", "10:00 AM", false)
 )
 
+val joseMessages = listOf(
+    Message("Olá Paulo, tudo bem?", "10:00 AM", true)
+)
+
 val users = listOf(
     User("paulo", "Paulo Bezerra", R.drawable.paulo, "Empresa 2 SA", "paulo.bezerra@empresa2.com.br", "11 31231-1231", "Em proposta", "Tem um problema claro em gerenciamento de estoque. Maior interesse na ferramenta de gestão de armazenagem.", "24/12/2025 09:00:00", isVip = true),
     User("andre", "André", R.drawable.andre, "Empresa 1 SA", "andre@empresa1.com.br", "11 98765-4321", "Inicial", "", "", isVip = false),
@@ -59,7 +63,8 @@ val users = listOf(
 val chats = listOf(
     Chat("paulo", "Paulo", "Ótimo! Obrigado pelo update.", "10:45 AM", 1, R.drawable.paulo, pauloMessages, isVip = true),
     Chat("andre", "André", "Mensagem de Campanha: Não perca nos...", "10:00 AM", 0, R.drawable.andre, andreMessages),
-    Chat("julia", "Júlia", "Pode me passar uma previsão?", "10:00 AM", 0, R.drawable.julia, juliaMessages)
+    Chat("julia", "Júlia", "Pode me passar uma previsão?", "10:00 AM", 0, R.drawable.julia, juliaMessages),
+    Chat("jose", "José", "Olá Paulo, tudo bem?", "10:00 AM", 0, R.drawable.jose, joseMessages)
 )
 
 

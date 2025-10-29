@@ -60,34 +60,18 @@ fun ChatScreen(navController: NavController? = null, userId: String?, userType: 
                     Row(
                         verticalAlignment = Alignment.CenterVertically,
                         modifier = Modifier.clickable {
-                            if (userType == "Cliente") {
-                                navController?.navigate("my-profile/${userType}")
-                            } else {
-                                navController?.navigate("profile/${user?.id}")
-                            }
+                            navController?.navigate("profile/${user?.id}/${userType}")
                         }
                     ) {
-                        if (userType == "Cliente") {
-                            Image(
-                                painter = painterResource(id = pauloProfile.avatar),
-                                contentDescription = "User Avatar",
-                                modifier = Modifier
-                                    .size(40.dp)
-                                    .clip(CircleShape)
-                            )
-                            Spacer(modifier = Modifier.width(8.dp))
-                            Text(pauloProfile.name)
-                        } else {
-                            Image(
+                        Image(
                                 painter = painterResource(id = chat?.avatar ?: R.drawable.jose),
                                 contentDescription = "User Avatar",
                                 modifier = Modifier
                                     .size(40.dp)
                                     .clip(CircleShape)
                             )
-                            Spacer(modifier = Modifier.width(8.dp))
-                            Text(user?.name ?: "")
-                        }
+                        Spacer(modifier = Modifier.width(8.dp))
+                        Text(user?.name ?: "")
                     }
                 },
                 navigationIcon = {

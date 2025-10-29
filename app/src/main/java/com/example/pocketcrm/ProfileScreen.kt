@@ -49,7 +49,7 @@ import com.example.pocketcrm.ui.theme.PocketCRMTheme
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
-fun ProfileScreen(navController: NavController? = null, userId: String?) {
+fun ProfileScreen(navController: NavController? = null, userId: String?, userType: String) {
     val user = users.find { it.id == userId }
 
     Scaffold(
@@ -103,18 +103,20 @@ fun ProfileScreen(navController: NavController? = null, userId: String?) {
 
                 Spacer(modifier = Modifier.height(16.dp))
 
-                StatusItem(status = user.status)
+                if (userType == "Operador") {
+                    StatusItem(status = user.status)
 
-                Spacer(modifier = Modifier.height(16.dp))
+                    Spacer(modifier = Modifier.height(16.dp))
 
-                ReminderCard(reminder = user.reminder)
+                    ReminderCard(reminder = user.reminder)
 
-                Spacer(modifier = Modifier.height(16.dp))
+                    Spacer(modifier = Modifier.height(16.dp))
 
-                QuickNoteCard(note = user.quickNote)
+                    QuickNoteCard(note = user.quickNote)
 
-                Spacer(modifier = Modifier.height(16.dp))
-
+                    Spacer(modifier = Modifier.height(16.dp))
+                }
+                
                 Text(
                     text = "Anotações",
                     style = MaterialTheme.typography.bodyLarge,
@@ -148,7 +150,9 @@ fun ProfileScreen(navController: NavController? = null, userId: String?) {
 
 @Composable
 fun StatusItem(status: String) {
-    Row(verticalAlignment = Alignment.CenterVertically) {
+    Row(
+        verticalAlignment = Alignment.CenterVertically
+    ) {
         Text(text = "Status:", style = MaterialTheme.typography.bodyLarge, color = Color(0xFF007BFF))
         Spacer(modifier = Modifier.width(8.dp))
         Badge(containerColor = Color.Red, contentColor = Color.White) {
@@ -169,7 +173,9 @@ fun ReminderCard(reminder: String) {
             modifier = Modifier.padding(horizontal = 16.dp, vertical = 12.dp),
             horizontalArrangement = Arrangement.SpaceBetween
         ) {
-            Row(verticalAlignment = Alignment.CenterVertically) {
+            Row(
+                verticalAlignment = Alignment.CenterVertically
+            ) {
                 Icon(
                     imageVector = Icons.Filled.CalendarToday,
                     contentDescription = null,
@@ -194,6 +200,6 @@ fun ReminderCard(reminder: String) {
 @Composable
 fun ProfileScreenPreview() {
     PocketCRMTheme {
-        ProfileScreen(userId = "paulo")
+        ProfileScreen(userId = "paulo", userType = "Operador")
     }
 }
