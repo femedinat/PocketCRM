@@ -35,6 +35,9 @@ import androidx.compose.material3.TextFieldDefaults
 import androidx.compose.material3.TopAppBar
 import androidx.compose.material3.TopAppBarDefaults
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
+import androidx.compose.runtime.collectAsState
+import androidx.compose.runtime.getValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
@@ -44,13 +47,28 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.NavController
 import com.example.pocketcrm.ui.theme.PocketCRMTheme
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
-fun ProfileScreen(navController: NavController? = null, userId: String?, userType: String) {
+fun ProfileScreen(
+    navController: NavController? = null,
+    userId: String?,
+    userType: String,
+    profileViewModel: ProfileViewModel = viewModel()
+) {
     val user = users.find { it.id == userId }
+    val quickNote by profileViewModel.quickNote.collectAsState()
+
+    // Fetch the note when the screen is first composed
+    LaunchedEffect(userId) {
+        if (userId != null) {
+            profileViewModel.fetchNote("9d441bc0-436a-4865-90bb-590f6df3c869")
+        }
+    }
+
 
     Scaffold(
         topBar = {
@@ -112,7 +130,7 @@ fun ProfileScreen(navController: NavController? = null, userId: String?, userTyp
 
                     Spacer(modifier = Modifier.height(16.dp))
 
-                    QuickNoteCard(note = user.quickNote)
+                    QuickNoteCard(note = quickNote)
 
                     Spacer(modifier = Modifier.height(16.dp))
                 }
